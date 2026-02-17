@@ -22,6 +22,10 @@ async def get_vehicle_by_id(vehicle_id: str):
 
 app = FastAPI() # Initialize the end point
 
+@app.get("/")
+def read_root():
+    return {"Root Testing"}
+
 @app.get("/vehicles")
 async def read_vehicles(vehicles=Depends(get_all_vehicles)):
     return vehicles

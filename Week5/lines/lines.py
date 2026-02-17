@@ -8,6 +8,10 @@ ENDPOINT_URL = "https://api-v3.mbta.com/" # DO NOT CHANGE THIS
 
 app = FastAPI() # Initialize the end point
 
+@app.get("/")
+def read_root():
+    return {"Root Testing"}
+
 @app.get("/lines")
 def get_route_lines():
     lines_list = list()

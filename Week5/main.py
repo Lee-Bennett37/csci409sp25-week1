@@ -1,18 +1,23 @@
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI, Request, Response, Depends
 from fastapi.responses import RedirectResponse
 from gateway.api_router import call_api_gateway, RedirectAlertsPortalException, RedirectLinesPortalException, RedirectRoutesPortalException, RedirectVehiclesPortalException
 from alerts import alerts
 from lines import lines
 from routes import routes
 from vehicles import vehicles
+from controller import transit
 
 app = FastAPI()
-app.include_router(call_api_gateway)
+app.include_router(transit.router, dependencies=[Depends(call_api_gateway)])
 
 @app.middleware("http")
 async def middleware(request: Request, call_next):
     response = await call_next(request)
     return response
+
+@app.get("/")
+def read_root():
+    return {"Root Testing"}
 
 @app.exception_handler(RedirectAlertsPortalException)
 def exception_handler_alerts(request: Request, exc: RedirectAlertsPortalException) -> Response:

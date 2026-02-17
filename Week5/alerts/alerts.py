@@ -28,6 +28,10 @@ async def get_alert_by_id(alert_id: str):
 
 app = FastAPI()  # Initialize the end point
 
+@app.get("/")
+def read_root():
+    return {"Root Testing"}
+
 @app.get("/alerts")
 async def read_alerts(route: str = None, stop: str = None, alerts=Depends(get_all_alerts)):
     return alerts
